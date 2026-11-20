@@ -10,7 +10,6 @@ const interface = {
         array = Words.find(word => word.length > 0);
         document.getElementById("word").textContent = array;
         document.getElementById("user-input").focus();
-        interface.updateTimer();
         interface.addEventListeners();
     },
     updateScore: function() {
@@ -39,7 +38,7 @@ const interface = {
     updateTimer: function(value) {
         
         let time = parseInt(document.getElementById("timer").textContent.split(": ")[1]);
-        let newTime = time + value || 6;
+        let newTime = time + value || 60;
         document.getElementById("timer").textContent = "Time: " + newTime;
         const interval = setInterval(timerFunction, 1000);
         function timerFunction(){
