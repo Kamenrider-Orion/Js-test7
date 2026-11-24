@@ -1,68 +1,100 @@
 const Words = [
-    "hello",
-    "world",
+    "dependent",
+    "dog",
+    "superficial",
+    "admit",
+    "juice",
     "javascript",
-    "programming"
+    "developer",
+    "airplane",
+    "great",
+    "fun",
+    "manipulate",
+    "cat",
+    "transition",
+    "school",
+    "computer",
+    "programming",
+    "drag",
+    "loving",
+    "north",
 ];
+    const word = document.getElementById("word");
+    const text = document.getElementById("user-input");
+    const scoreEl = document.getElementById("score");
+    const timeEl = document.getElementById("timer");
+    const endgameEl = document.getElementById("game-over-container");
+    
+
+let randomWord;
+let score = 0;
+    let Time = 30;
+     
 const interface = {
-    addWordToDOM: function(array) {
-        Words.sort(() => Math.random() - 0.5);
-        array = Words.find(word => word.length > 0);
-        document.getElementById("word").textContent = array;
-        document.getElementById("user-input").focus();
+ 
+    
+ getRandomWord: function() {
+    return Words[Math.floor(Math.random() * Words.length)]; 
+  
+},
+    addWordToDOM: function() {
+        randomWord = interface.getRandomWord();
+        word.innerHTML = randomWord;
+        text.focus();
         interface.addEventListeners();
     },
     updateScore: function() {
-        let score = parseInt(document.getElementById("score").textContent.split(": ")[1]);
-        score++;
-        document.getElementById("score").textContent = "Score: " + score;
+        score ++;
+        scoreEl.innerHTML = "Score: " + score;
         document.getElementById("message").textContent = "Correct!";
     },
     addEventListeners: function() {
-        const input = document.getElementById("user-input");
-        input.addEventListener("keyup", function(event) {
-            if (event.code === "space" || event.code === "Enter") {
-                const userInput = input.value.trim();
-                if (userInput === document.getElementById("word").textContent) {
-                    document.getElementById("message").textContent = "";
-                    interface.updateScore();
-                    interface.updateTimer(5);
-                    input.value = "";
-                    interface.addWordToDOM(Words);
-                } else if (userInput !== document.getElementById("word").textContent) {
-                    document.getElementById("message").textContent = "Incorrect! Try again.";
-                }
-            }
-        });
+        
+text.addEventListener("input", (event) => {
+    const insertedText = event.target.value; 
+
+    if (insertedText === randomWord) {
+        interface.addWordToDOM(); 
+
+        interface.updateScore(); 
+
+        
+        event.target.value = ""; 
+
+        
+
+        
+        Time += 5; 
+        
+        interface.updateTimer(); 
+    }
+}); 
+
     },
-    updateTimer: function(value) {
-        
-        let time = parseInt(document.getElementById("timer").textContent.split(": ")[1]);
-        let newTime = time + value || 60;
-        document.getElementById("timer").textContent = "Time: " + newTime;
-        const interval = setInterval(timerFunction, 1000);
-        function timerFunction(){
-            newTime--;
-            document.getElementById("timer").textContent = "Time: " + newTime;
-            if (newTime < 0) {
-            clearInterval(interval);
+
+    updateTimer: function() { 
+            Time--;
+           timeEl.innerHTML = Time + "s";
+            if (Time < 0) {
+            clearInterval(Timeinterval);
             interface.gameOver();
-        }
+        
         }
         
+    },
+    addTime: function(){
+
     },
     gameOver: function() {
         document.getElementById("message").textContent = "";
-        document.getElementById("word").style.display = "none";
-        document.getElementById("user-input").disabled = true;
-        document.getElementById("game-over-container").style.display = "grid";
+        word.style.display = "none";
+        text.disabled = true;
+        endgameEl.innerHTML = `<h1>Time ran out!</h1> <p> Your final score is ${score}</p>
+    <button onClick = "location.reload()">Reload</button>`;
+    endgameEl.style.display != "none";
+       endgameEl.style.display = "flex";
     }
 };
-let number = 6;
-function time() {
-    console.log(number--);
-    if (number < 0) {
-        clearInterval(interval);
-    }
-}
-const interval = setInterval(time, 1000);
+const Timeinterval = setInterval(interface.updateTimer, 1000);
+
+let start = interface.addWordToDOM();
